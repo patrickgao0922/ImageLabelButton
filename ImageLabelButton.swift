@@ -23,35 +23,6 @@ class ImageLabelButton: UIButton{
     
     
     
-    // Override property observors
-    @IBInspectable
-    var textColor:UIColor? {
-        get {
-            return buttonLabel.textColor
-        }
-        set(newValue) {
-            self.buttonLabel.textColor = newValue
-        }
-    }
-    
-    @IBInspectable
-    var labelText:String? {
-        get {
-            return self.buttonLabel.text
-        }
-        set(textString) {
-            self.buttonLabel.text = textString
-        }
-    }
-    @IBInspectable
-    var buttonImg: UIImage? {
-        get {
-            return self.buttonImgView.image
-        }
-        set(image) {
-            self.buttonImgView.image = image
-        }
-    }
     
     @IBInspectable
     var imageWidth: CGFloat {
@@ -76,6 +47,70 @@ class ImageLabelButton: UIButton{
     
     @IBInspectable
     var imageLabelDistance: CGFloat = 8.0
+    
+    
+    
+    
+    // Porperties for default state
+    @IBInspectable
+    var textColor:UIColor? {
+        
+        didSet{
+            self.setNeedsDisplay()
+        }
+    }
+    
+    @IBInspectable
+    var labelText:String? {
+        didSet{
+            self.setNeedsDisplay()
+        }
+    }
+    @IBInspectable
+    var buttonImg: UIImage? {
+        didSet{
+            self.setNeedsDisplay()
+        }
+    }
+    
+    // Porperties for default selected
+    @IBInspectable
+    var selectedTextColor:UIColor? {
+        
+        didSet{
+            self.setNeedsDisplay()
+        }
+    }
+    
+    @IBInspectable
+    var selectedLabelText:String? {
+        didSet{
+            self.setNeedsDisplay()
+        }
+    }
+    @IBInspectable
+    var selectedButtonImg: UIImage? {
+        didSet{
+            self.setNeedsDisplay()
+        }
+    }
+    
+    override var isSelected: Bool {
+        didSet{
+            if isSelected{
+                self.buttonLabel.textColor = self.selectedTextColor
+                self.buttonLabel.text = selectedLabelText
+                self.buttonImgView.image = selectedButtonImg
+            }
+            else {
+                self.buttonLabel.textColor = self.textColor
+                self.buttonLabel.text = labelText
+                self.buttonImgView.image = buttonImg
+            }
+        }
+    }
+    
+    
     
     convenience init() {
         self.init(frame:CGRect.zero)
