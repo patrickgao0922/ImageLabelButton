@@ -97,6 +97,7 @@ class ImageLabelButton: UIButton{
     
     override var isSelected: Bool {
         didSet{
+            print(self.isSelected)
             if isSelected{
                 self.buttonLabel.textColor = self.selectedTextColor
                 self.buttonLabel.text = selectedLabelText
@@ -104,9 +105,10 @@ class ImageLabelButton: UIButton{
             }
             else {
                 self.buttonLabel.textColor = self.textColor
-                self.buttonLabel.text = labelText
-                self.buttonImgView.image = buttonImg
+                self.buttonLabel.text = self.labelText
+                self.buttonImgView.image = self.buttonImg
             }
+           // self.setNeedsDisplay()
         }
     }
     
@@ -116,6 +118,7 @@ class ImageLabelButton: UIButton{
         self.init(frame:CGRect.zero)
         // Init button
         self.initButton()
+        self.updateButton()
     }
     
     override init(frame:CGRect){
@@ -130,13 +133,15 @@ class ImageLabelButton: UIButton{
     // Init for loading in Interface Builder
     override func prepareForInterfaceBuilder() {
         self.initButton()
+        self.updateButton()
     }
     override func awakeFromNib() {
         super.awakeFromNib()
         self.initButton()
+        self.updateButton()
     }
     override func layoutSubviews() {
-        self.initButton()
+        self.updateButton()
     }
     
     func initButton(){
@@ -144,17 +149,17 @@ class ImageLabelButton: UIButton{
         self.imageLabelDistance = 8.0
         self.imageWidth = 35.0
         self.imageHeight = 35.0
-        self.labelText = "Button Label"
-        self.textColor = UIColor(red: 216.0/255.0, green: 216.0/255.0, blue: 216.0/255.0, alpha: 1.0)
+//        self.labelText = "Button Label"
+//        self.textColor = UIColor(red: 216.0/255.0, green: 216.0/255.0, blue: 216.0/255.0, alpha: 1.0)
         
         
         buttonImgView.frame.size = CGSize(width:imageWidth, height:imageHeight)
         buttonImgView.frame.origin = CGPoint(x: self.frame.width / 2.0 - buttonImgView.frame.width / 2.0, y: 8.0)
         buttonImgView.contentMode = .center
         
-        buttonLabel.frame.size = CGSize(width: 45.5, height:11.0)
+        buttonLabel.frame.size = CGSize(width: 45.5, height:17.0)
         buttonLabel.frame.origin = CGPoint(x: self.frame.width / 2.0 - buttonLabel.frame.width / 2.0, y: (imageView?.frame.origin.y)! + imageHeight+8.0)
-        buttonLabel.font = UIFont.systemFont(ofSize: 11.0)
+        buttonLabel.font = UIFont(name: "HelveticaLight", size: 17.0)
         self.frame.size.height = 8.0 + self.imageHeight + self.imageLabelDistance + self.buttonLabel.frame.size.height + 8.0
         
         //        stackView.addArrangedSubview(buttonImgView)
@@ -172,8 +177,23 @@ class ImageLabelButton: UIButton{
         //        stackView.centerYAnchor.constraintEqualToAnchor((superview?.centerYAnchor)!).active = true
     }
     
+    func updateButton() {
+        print(self.isSelected)
+        if isSelected{
+            self.buttonLabel.textColor = self.selectedTextColor
+            self.buttonLabel.text = selectedLabelText
+            self.buttonImgView.image = selectedButtonImg
+        }
+        else {
+            self.buttonLabel.textColor = self.textColor
+            self.buttonLabel.text = self.labelText
+            self.buttonImgView.image = self.buttonImg
+        }
+
+    }
+    
     func scaleOut() {
-        UIView.animate(withDuration: 0.3, animations: { 
+        UIView.animate(withDuration: 0.3, animations: {
             self.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
         }, completion: nil)
     }
